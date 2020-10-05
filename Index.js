@@ -6,6 +6,8 @@ const inquirer = require('inquirer')
 
 console.log("i'm running")
 
+empArray = []
+
 let engineer = new Engineer("Troy", "C32", "troy.berry@cypruscu.com", "tberry")
 
 let intern = new Intern("Geo", "E46", "geoff.dutson@cypruscu.com", "University of Utah")
@@ -89,33 +91,76 @@ internQuestions = [
         message: 'Please enter the interns School Name:  '
     }
 ]
-
-
-
-// program to prompt for manager details
-const myManager = () => {
-    return inquirer.prompt(managerQuestions)
+managerOptions = [
+    {
+        type: 'list',
+        name: 'managerSelection',
+        message: 'Please select an option from below:  ',
+        choices: ['Add an Engineer', 'Add an Intern', 'Create HTML Code']
+    }
+]
+const addEngineer = () => {
+    inquirer.prompt(engineerQuestions)
+        .then(engResponses => {
+            let tmpEng = new Engineer(engResponses.engineerName, engResponses.engineerId, engResponses.engineerEmail, engResponses.engineerGit)
+            empArray.push(tmpEng)
+        })
 }
+
+const addIntern = () => {
+    console.log('im building an intern')
+}
+
+//build html stuff
+const buildHtml = () => {
+    console.log('html')
+}
+
 
 //manager menu
 const managerMenu = () => {
-    console.log("i'm the best")
+    inquirer.prompt(managerOptions)
+        .then(managerSelectionResponse => {
+            console.log(managerSelectionResponse.managerSelection)
+            if (managerSelectionResponse.managerSelection === "Add an Engineer") {
+                console.log("imma add an engineer!")
+                addEngineer();
+                managerMenu();
+            }else if (managerSelectionResponse.managerSelection === "Add an Intern") {
+                console.log("imma add an intern!")
+                addIntern();
+                managerMenu();
+            }else {
+                console.log("guess ill create some html")
+                return
+            }
+        })
 }
 
-//program for new engineer
+// program to prompt for manager details
 
-//program for new intern
+    const init = () => {
+        inquirer.prompt(managerQuestions)
+            .then(mgrResponses => {
+                let tmpMgr = new Manager(mgrResponses.managerName, mgrResponses.managerId, mgrResponses.managerEmail, mgrResponses.managerOffice)
+                empArray.push(tmpMgr)
+                managerMenu()
+                    .then(() => {
+                        console.log(empArray)
+                    })
+            })
+    }
 
-// program to create webpage
+
+
+    //program for new engineer
+
+    //program for new intern
+
+    // program to create webpage
 
 
 
-// run program area
+    // run program area
 
-myManager()
-    .then(managerData => {
-        let manager = new Manager(managerData.managerName, managerData.managerId, managerData.managerEmail, managerData.managerOffice);
-        console.log(manager)
-        return manager
-    })
-    .then(managerMenu())
+    init()
