@@ -1,0 +1,46 @@
+h1 {
+    color: teal;
+    font-size: 60px;
+}
+
+h2 {
+    font-size: 40px;
+}
+h3 {
+    font-size: 25px;
+}
+
+h4 {
+    color: black;
+    font-size: 20px
+}
+
+
+
+.header {
+    background-color:lightgray;
+    text-align: center;
+}
+
+.card {
+    max-width: 18rem;
+    color: black;
+    background-color: teal;
+}
+.card-body {
+    background-color: grey;
+    
+}
+
+.card-body-sub {
+    background-color: lightgray;
+}
+img {
+    height: 30px;
+    width: 30px;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
