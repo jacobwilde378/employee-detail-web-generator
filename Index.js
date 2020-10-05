@@ -28,7 +28,7 @@ managerQuestions = [
     {
         type: 'input',
         name: 'managerOffice',
-        message: 'Please enter the manager office name:  '
+        message: 'Please enter the manager office number:  '
     }
 
 ]
