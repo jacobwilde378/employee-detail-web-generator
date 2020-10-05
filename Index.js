@@ -1,3 +1,4 @@
+const CreateHTML = require('./utils/CreateHTML')
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
 const Manager = require('./lib/Manager')
@@ -7,20 +8,6 @@ const inquirer = require('inquirer')
 console.log("i'm running")
 
 empArray = []
-
-let engineer = new Engineer("Troy", "C32", "troy.berry@cypruscu.com", "tberry")
-
-let intern = new Intern("Geo", "E46", "geoff.dutson@cypruscu.com", "University of Utah")
-
-//let test = new Employee("Jacob", 378, "jacob.wilde@utah.edu")
-
-// console.log(manager)
-
-// console.log(engineer)
-
-// console.log(intern)
-
-//****************************************************************************************************************************************
 
 managerQuestions = [
     {
@@ -99,21 +86,37 @@ managerOptions = [
         choices: ['Add an Engineer', 'Add an Intern', 'Create HTML Code']
     }
 ]
+function buildFile(htmlText) {
+    fs.writeFile('./dist/index.html', htmlText, err =>{
+        if (err) throw err;
+        console.log("Your File has been created!")
+    })
+}
+
 const addEngineer = () => {
     inquirer.prompt(engineerQuestions)
         .then(engResponses => {
-            let tmpEng = new Engineer(engResponses.engineerName, engResponses.engineerId, engResponses.engineerEmail, engResponses.engineerGit)
-            empArray.push(tmpEng)
+            let tmpEng = new Engineer(engResponses.engineerName, engResponses.engineerId, engResponses.engineerEmail, engResponses.engineerGit);
+            empArray.push(tmpEng);
+            managerMenu();
         })
 }
 
 const addIntern = () => {
-    console.log('im building an intern')
+    inquirer.prompt(internQuestions)
+        .then(intResponses => {
+            let tmpInt = new Intern(intResponses.internName, intResponses.internId, intResponses.internEmail, intResponses.internSchool);
+            empArray.push(tmpInt);
+            managerMenu();
+        })
 }
 
 //build html stuff
 const buildHtml = () => {
-    console.log('html')
+    let htmlData = CreateHTML(empArray)
+    console.log(htmlData)
+    buildFile(htmlData);
+
 }
 
 
@@ -121,46 +124,23 @@ const buildHtml = () => {
 const managerMenu = () => {
     inquirer.prompt(managerOptions)
         .then(managerSelectionResponse => {
-            console.log(managerSelectionResponse.managerSelection)
             if (managerSelectionResponse.managerSelection === "Add an Engineer") {
-                console.log("imma add an engineer!")
                 addEngineer();
-                managerMenu();
-            }else if (managerSelectionResponse.managerSelection === "Add an Intern") {
-                console.log("imma add an intern!")
+            } else if (managerSelectionResponse.managerSelection === "Add an Intern") {
                 addIntern();
-                managerMenu();
-            }else {
-                console.log("guess ill create some html")
-                return
+            } else {
+                buildHtml();
             }
         })
 }
 
-// program to prompt for manager details
+const init = () => {
+    inquirer.prompt(managerQuestions)
+        .then(mgrResponses => {
+            let tmpMgr = new Manager(mgrResponses.managerName, mgrResponses.managerId, mgrResponses.managerEmail, mgrResponses.managerOffice)
+            empArray.push(tmpMgr)
+            managerMenu()
+        })
+}
 
-    const init = () => {
-        inquirer.prompt(managerQuestions)
-            .then(mgrResponses => {
-                let tmpMgr = new Manager(mgrResponses.managerName, mgrResponses.managerId, mgrResponses.managerEmail, mgrResponses.managerOffice)
-                empArray.push(tmpMgr)
-                managerMenu()
-                    .then(() => {
-                        console.log(empArray)
-                    })
-            })
-    }
-
-
-
-    //program for new engineer
-
-    //program for new intern
-
-    // program to create webpage
-
-
-
-    // run program area
-
-    init()
+init()
