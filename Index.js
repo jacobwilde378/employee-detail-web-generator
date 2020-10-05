@@ -114,9 +114,7 @@ const addIntern = () => {
 //build html stuff
 const buildHtml = () => {
     let htmlData = CreateHTML(empArray)
-    console.log(htmlData)
     buildFile(htmlData);
-
 }
 
 
